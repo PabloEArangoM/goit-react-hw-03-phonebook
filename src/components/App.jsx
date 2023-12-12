@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ContactForm from './ContactForm/ContactForm';
 import ContactList from './ContactList/ContactList';
 import Filter from './Filter/Filter';
@@ -6,6 +6,15 @@ import Filter from './Filter/Filter';
 const App = () => {
   const [contacts, setContacts] = useState([]);
   const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    const storedContacts = JSON.parse(localStorage.getItem('contacts')) || [];
+    setContacts(storedContacts);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const addContact = (newContact) => {
     if (contacts.find((contact) => contact.name === newContact.name)) {
@@ -33,4 +42,3 @@ const App = () => {
 };
 
 export default App;
-
